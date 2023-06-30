@@ -12,18 +12,25 @@ def invoice_page(request):
         invoice_number = request.POST.get('invoiceNumber')
         items = []
         i = 0
+        sub_total = 0
         while(request.POST.get('item_rate[%d]'%i) != None):
+            quantity = request.POST.get('item_quantity[%d]'%i)
+            rate = request.POST.get('item_rate[%d]'%i)
+            total = int(quantity) * float(rate)
             items.append({
                  'description' : request.POST.get('item_description[%d]'%i),
-                 'quantity' : request.POST.get('item_quantity[%d]'%i),
-                 'rate' : request.POST.get('item_rate[%d]'%i)       
+                 'quantity' : quantity,
+                 'rate' : rate,
+                 'total' :  total
                         })
-            i+=1             
+            sub_total += total
+            i+=1   
 
         context = {
             'billing_address': billing_address,
             'invoice_number': invoice_number,
-            'items': items
+            'items': items,
+            'sub_total' : sub_total
                 }
         return render(request, 'invoice.html', context)
     else:
