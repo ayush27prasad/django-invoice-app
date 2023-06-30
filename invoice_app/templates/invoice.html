@@ -35,12 +35,12 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item_description, item_quantity, item_price in items %}
+                {% for item in items %}
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{ item_description }}</td>
-                    <td>{{ item_quantity }}</td>
-                    <td>{{ item_price }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.rate }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
