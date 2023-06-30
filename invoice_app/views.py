@@ -1,49 +1,57 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .forms import InvoiceForm
 from django.template.loader import get_template
 from django.views import View
 from xhtml2pdf import pisa
 
 
-def display_invoice(request):
-    if request.method == 'POST':
-        form = InvoiceForm(request.POST)
-        if form.is_valid():
-            context = {
-                'description': form.cleaned_data['description'],
-                'quantity': form.cleaned_data['quantity'],
-                'unit_price': form.cleaned_data['unit_price'],
-                'address': form.cleaned_data['address'],
-            }
-            return render(request, 'invoice_app/invoice_display.html', context)
-    return redirect('invoice_page')
-
-# def invoice_page(request):
-#     if request.method == 'POST':
-#         form = InvoiceForm(request.POST)
-#         if form.is_valid():
-#             return generate_pdf_invoice(form.cleaned_data)
-#     else:
-#         form = InvoiceForm()
-
-#     return render(request, 'invoice_app/invoice_page.html', {'form': form})
-
 def invoice_page(request):
     if request.method == 'POST':
-        form = InvoiceForm(request.POST)
-        if form.is_valid():
-            context = {
-                'description': form.cleaned_data['description'],
-                'quantity': form.cleaned_data['quantity'],
-                'unit_price': form.cleaned_data['unit_price'],
-                'address': form.cleaned_data['address'],
+        billing_address = request.POST.get('billingAddress')
+        invoice_number = request.POST.get('invoiceNumber')
+        # Retrieve the item details from the request.POST dictionary
+        item_descriptions = request.POST.getlist('itemDescription')
+        item_quantities = request.POST.getlist('itemQuantity')
+        item_unit_prices = request.POST.getlist('itemUnitPrice')
+        # Create a list to store the item data
+        items = []
+        for description, quantity, unit_price in zip(item_descriptions, item_quantities, item_unit_prices):
+            item = {
+                'description': description,
+                'quantity': quantity,
+                'unit_price': unit_price
             }
-            return render(request, 'invoice_app/invoice_display.html', context)
+            items.append(item)
+        # Pass the data to the template
+        context = {
+            'billing_address': billing_address,
+            'invoice_number': invoice_number,
+            'items': items
+        }
+        return render(request, 'invoice.html', context)
     else:
-        form = InvoiceForm()
-    
-    return render(request, 'invoice_app/invoice_page.html', {'form': form})
+        return render(request, 'invoice_page.html')
 
+def invoice(request):
+    if request.method == 'POST':
+        # Retrieve the form data from the POST request
+        billing_address = request.POST.get('billingAddress')
+        invoice_number = request.POST.get('invoiceNumber')
 
+        # Retrieve the item data from the POST request
+        item_descriptions = request.POST.getlist('itemDescription')
+        item_quantities = request.POST.getlist('itemQuantity')
+        item_prices = request.POST.getlist('itemUnitPrice')
 
+        # Prepare the data to pass to the template
+        context = {
+            'billing_address': billing_address,
+            'invoice_number': invoice_number,
+            'items': zip(item_descriptions, item_quantities, item_prices),
+        }
+
+        # Render the invoice template with the data
+        return render(request, 'invoice.html', context)
+
+    # If the request method is GET, render the initial form
+    return render(request, 'invoice.html')
