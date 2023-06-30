@@ -6,31 +6,25 @@ from xhtml2pdf import pisa
 from .models import Invoice, Item
 
 def invoice_page(request):
+    print("ABCD")
     if request.method == 'POST':
         billing_address = request.POST.get('billingAddress')
         invoice_number = request.POST.get('invoiceNumber')
-        item_descriptions = request.POST.getlist('item_description[]')
-        item_quantities = request.POST.getlist('item_quantity[]')
-        item_rates = request.POST.getlist('item_rate[]')
-        
-        invoice = Invoice.objects.create(
-            billing_address=billing_address,
-            invoice_number=invoice_number
-        )
-
-        for description, quantity, rate in zip(item_descriptions, item_quantities, item_rates):
-            Item.objects.create(
-                invoice=invoice,
-                item_description=description,
-                item_quantity=quantity,
-                item_rate=rate
-            )
+        items = []
+        i = 0
+        while(request.POST.get('item_rate[%d]'%i) != None):
+            items.append({
+                 'description' : request.POST.get('item_description[%d]'%i),
+                 'quantity' : request.POST.get('item_quantity[%d]'%i),
+                 'rate' : request.POST.get('item_rate[%d]'%i)       
+                        })
+            i+=1             
 
         context = {
             'billing_address': billing_address,
             'invoice_number': invoice_number,
-            'items': invoice.items.all()
-        }
+            'items': items
+                }
         return render(request, 'invoice.html', context)
     else:
         return render(request, 'invoice_page.html')
