@@ -1,170 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-      crossorigin="anonymous"
-    />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
-      .card {
-        width: 800px;
-        height: fit-content;
-        margin: auto;
-        margin-top: 2%;
-      }
-      .card-footer,
-      .card-header {
-        text-align: center;
-      }
-      .rock-bottom {
-        margin-top: 3%;
-      }
+        .card {
+            width: 800px;
+            height: fit-content;
+            margin: auto;
+            margin-top: 2%;
+        }
+        .card-footer,
+        .card-header {
+            text-align: center;
+        }
+        .rock-bottom{
+            margin-top: 3%;
+        }
     </style>
     <title>Invoice</title>
-  </head>
-  <body>
+</head>
+<body>
     <div class="card text-dark">
-      <h3 class="card-header">Invoice Details</h3>
-      <div class="card-body">
-        <div class="form-group">
-          <form action="{% url 'invoice_page' %}" method="POST">
-            {% csrf_token %}
+        <h3 class="card-header">Invoice Details</h3>
+        <div class="card-body">
+            <div class="form-group">
+                <form action="{% url 'invoice_page' %}" method="POST">
+                    {% csrf_token %} 
 
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                <label for="billingAddress">Billing Address</label>
-                <textarea
-                  class="form-control"
-                  id="billingAddress"
-                  name="billingAddress"
-                  rows="3"
-                  cols="60"
-                ></textarea>
-              </li>
-              <li class="list-group-item">
-                <label for="invoiceNumber">Invoice Number</label>
-                <input
-                  type="number"
-                  id="invoiceNumber"
-                  name="invoiceNumber"
-                  class="form-control"
-                  min="1"
-                  max="9999"
-                  placeholder="#InvoiceNo."
-                />
-              </li>
-            </ul>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <label for="billingAddress">Billing Address</label>
+                            <textarea class="form-control" id="billingAddress" name="billingAddress" rows="3" cols="60"></textarea>
+                        </li>
+                        <li class="list-group-item">
+                            <label for="invoiceNumber">Invoice Number</label>
+                            <input type="number" id="invoiceNumber" name="invoiceNumber" class="form-control" min="1" max="9999" placeholder="#InvoiceNo.">
+                        </li>
+                    </ul>
 
-            <div>
-              <label for="itemDescription">Item Description</label>
-              <textarea
-                class="form-control"
-                id="itemDescription"
-                name="itemDescription"
-                rows="2"
-                cols="60"
-              ></textarea>
-            </div>
-            <br />
-            <div class="form-row">
-              <div class="col">
-                <label for="itemQuantity">Item Quantity</label>
-                <input
-                  type="number"
-                  id="itemQuantity"
-                  name="itemQuantity"
-                  class="form-control"
-                  min="1"
-                  max="9999"
-                  placeholder="Quantity"
-                />
-              </div>
-              <div class="col">
-                <label for="itemUnitPrice">Item Price/Unit</label>
-                <input
-                  type="number"
-                  id="itemUnitPrice"
-                  name="itemRate"
-                  step="0.01"
-                  class="form-control"
-                  placeholder="Unit Price"
-                />
-              </div>
-            </div>
-
-            <div class="card-footer">
-              <button type="button" id="addItemBtn" class="btn btn-danger">
-                Add item
-              </button>
-            </div>
-            <!-- </div>
+                            <div>
+                        <label for="itemDescription">Item Description</label>
+                        <textarea class="form-control" id="itemDescription" name="itemDescription" rows="2" cols="60"></textarea>
+                            </div>
+                         <br>
+                                 <div class="form-row">
+                                    <div class="col">
+                                     <label for="itemQuantity">Item Quantity</label>
+                                     <input type="number" id="itemQuantity" name="itemQuantity" class="form-control" min="1" max="9999" placeholder="Quantity">
+                                 </div>
+                                    <div class="col">
+                                        <label for="itemUnitPrice">Item Price/Unit</label>
+                                        <input type="number" id="itemUnitPrice" name="itemRate" step="0.01" class="form-control" placeholder="Unit Price">
+                                    </div>
+                                 </div>
+                    
+                    <div class="card-footer">
+                        <button type="button" id="addItemBtn" class="btn btn-danger">Add item</button>
+                    </div>
                         </div>
-                    </div> -->
-
-            <div class="card">
-              <table class="table">
-                <thead class="thead-dark">
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Item Description</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Price</th>
-                  </tr>
-                </thead>
-                <tbody id="itemTableBody">
-                  <!-- EMPTY TABLE BODY -->
-                </tbody>
-              </table>
-            </div>
-
-            <div class="rock-bottom">
-              <div class="card-footer">
-                <button type="submit" href="/invoice/" class="btn btn-dark">
-                  Generate Invoice
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+                        </div>
+                    </div>
+        
+                    <div class="card">
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Item Description</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="itemTableBody">
+                                 <!-- EMPTY TABLE BODY -->
+                                </tbody>
+                         </table>
+                                 </div>
+                             
+                             <div class="rock-bottom">
+                                 <div class="card-footer">
+                             <button type="submit" href="/invoice/" class="btn btn-dark">Generate Invoice</button>
+                                 </div>
+                             </div>
+            </form>
+    
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const addItemBtn = document.getElementById("addItemBtn");
-        const itemTableBody = document.getElementById("itemTableBody");
-        const itemDescriptionInput = document.getElementById("itemDescription");
-        const itemQuantityInput = document.getElementById("itemQuantity");
-        const itemUnitPriceInput = document.getElementById("itemUnitPrice");
-        let itemCount = 0;
+        document.addEventListener('DOMContentLoaded', function() {
+            const addItemBtn = document.getElementById('addItemBtn');
+            const itemTableBody = document.getElementById('itemTableBody');
+            const itemDescriptionInput = document.getElementById('itemDescription');
+            const itemQuantityInput = document.getElementById('itemQuantity');
+            const itemUnitPriceInput = document.getElementById('itemUnitPrice');
+            let itemCount = 0;
 
-        addItemBtn.addEventListener("click", function () {
-          const itemDescription = itemDescriptionInput.value;
-          const itemQuantity = itemQuantityInput.value;
-          const itemUnitPrice = itemUnitPriceInput.value;
+            addItemBtn.addEventListener('click', function() {
+                const itemDescription = itemDescriptionInput.value;
+                const itemQuantity = itemQuantityInput.value;
+                const itemUnitPrice = itemUnitPriceInput.value;
 
-          if (itemDescription && itemQuantity && itemUnitPrice) {
-            itemCount++;
-            const newRow = document.createElement("tr");
-            newRow.innerHTML = `
+                if (itemDescription && itemQuantity && itemUnitPrice) {
+                    itemCount++;
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
                         <th scope="row">${itemCount}</th>
                         <td><input type="text" name="item_description[${itemCount}]" value="${itemDescription}" readonly></td>
                         <td><input type="number" name="item_quantity[${itemCount}]" value="${itemQuantity}" readonly></td>
                         <td><input type="number" name="item_rate[${itemCount}]]" value="${itemUnitPrice}" readonly></td>
                     `;
+                    
+                    itemTableBody.appendChild(newRow);
 
-            itemTableBody.appendChild(newRow);
-
-            // Clear input fields
-            itemDescriptionInput.value = "";
-            itemQuantityInput.value = "";
-            itemUnitPriceInput.value = "";
-          }
+                    // Clear input fields
+                    itemDescriptionInput.value = '';
+                    itemQuantityInput.value = '';
+                    itemUnitPriceInput.value = '';
+                }
+            });
         });
-      });
     </script>
-  </body>
+</body>
 </html>
