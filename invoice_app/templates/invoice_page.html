@@ -31,7 +31,7 @@
       <h3 class="card-header">Invoice Details</h3>
       <div class="card-body">
         <div class="form-group">
-          <form action="{% url 'invoice_page' %}" method="POST">
+          <form name="invoice-details" action="{% url 'invoice_page' %}" method="POST">
             {% csrf_token %}
 
             <ul class="list-group list-group-flush">
@@ -95,10 +95,6 @@
                 />
               </div>
             </div>
-
-            <!-- </div>
-            </div>
-        </div> -->
           </form>
         </div>
       </div>
@@ -125,7 +121,7 @@
 
       <div class="rock-bottom">
         <div class="card-footer">
-          <button type="submit" href="/invoice/" class="btn btn-dark">
+          <button type="submit" form="invoice-details" href="/invoice/" class="btn btn-dark">
             Generate Invoice
           </button>
         </div>
