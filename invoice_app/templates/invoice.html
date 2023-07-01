@@ -1,131 +1,176 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Invoice Template</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <style>
-    .header{
-      width : 100%;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice Template</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <style>
+      .header {
+        width: 100%;
       }
-      .contentbody{
-        min-height : 50vh;
+      .contentbody {
+        min-height: 30vh;
       }
-      .companyAddress{
+      .companyAddress {
         margin : 30px;
-        font-weight : bold;  
-      }
-      .totalBar{
-        padding-left : 50px;
-        padding-right : 150px;
-        padding-top : 20px;
-        padding-bottom : 20px;
-        display : flex;
-        justify-content : space-between;
-        background-color : #212a33; 
-        color : white;
-        font-weight : bold;  
-      }
-      .tableHead{
-        background-color : #212a33 !important;
-      }
-      .footerDetails{
-        position : relative;
-      }
-      .phone{
-        position : absolute;
-        top : 48px;
-        left : 70px;
-        color : white !important;
+        margin-right : 500px;
         font-weight : bold;
-        cursor : pointer;
-        font-size : 18px;
+        display : inline-block;
+        justify : left;
       }
-      .mail{
-        position : absolute;
-        top : 48px;
-        left : 260px;
-        color : white !important;
-        font-weight : bold;
-        cursor : pointer;
-        font-size : 16px;
+      .date{
+        margin: 30px;
+        font-weight: bold;
+        display : inline-block;
+        justify : right;
       }
-      .website{
-        position : absolute;
-        top : 48px;
-        left : 555px;
-        color : white !important;
-        font-weight : bold;
-        cursor : pointer;
-        font-size : 16px;
+      .totalBar {
+        padding-left: 50px;
+        padding-right: 50px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        background-color: #212a33;
+        color: white;
+        font-weight: bold;
       }
-
-  </style>
-</head>
-<body>
-  <div class="container">
-    <img src = "{% static 'images/header.png' %}" class ="header">
-    <div class="centered-content">
-        
-            <div class="card text-dark">
-                <div class="card-body">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <strong>Invoice Number:</strong> {{ invoice_number }}
-                        </li>
-                        <li class="list-group-item">
-                            <strong>Billing Address:</strong> {{ billing_address }}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-     
+      .tableHead {
+        background-color: #f1851c !important;
+        border-color: #f1851c !important;
+      }
+      .footerDetails {
+        position: relative;
+      }
+      .phone {
+        position: absolute;
+        top: 48px;
+        left: 70px;
+        color: white !important;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 18px;
+      }
+      .mail {
+        position: absolute;
+        top: 48px;
+        left: 260px;
+        color: white !important;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .website {
+        position: absolute;
+        top: 48px;
+        left: 555px;
+        color: white !important;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .invoice{
+        position: absolute;
+        top: 60px;
+        right: 100px;
+        color: white !important;
+        font-weight: bold;
+        font-size: 90px;
+        font-family: sans-serif ;
+      }
+      .a4pdf{
+        border-width : 1px;
+        border-color : black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container a4pdf" id = "generatedInvoice">
+      <div class="footerDetails">
+        <img src="{% static 'images/header.png' %}" class="header" />
+        <h1 class="invoice">Invoice</h1>
+      </div>
+      
+      <div class="centered-content">
+        <div class="card text-dark">
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <strong>Invoice Number:</strong> {{ invoice_number }}
+              </li>
+              <li class="list-group-item">
+                <strong>Billing Address:</strong> {{ billing_address }}
+              </li>
+            </ul>
+          </div>
+        </div>
 
         <div class="card contentbody">
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr class = "tableHead">
-                        <th class = "tableHead" scope="col" > # </th>
-                        <th class = "tableHead" scope="col" > Item Description </th>
-                        <th class = "tableHead" scope="col" > Quantity </th>
-                        <th class = "tableHead" scope="col" > Price </th>
-                        <th class = "tableHead" scope="col" > Total </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in items %}
-                    <tr>
-                        <th scope="row">{{ forloop.counter }}</th>
-                        <td>{{ item.description }}</td>
-                        <td>{{ item.quantity }}</td>
-                        <td>{{ item.rate }}</td>
-                        <td>{{ item.total }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
+          <table class="table">
+            <thead class="thead-dark">
+              <tr class="tableHead">
+                <th class="tableHead" scope="col">#</th>
+                <th class="tableHead" scope="col">Item Description</th>
+                <th class="tableHead" scope="col">Quantity</th>
+                <th class="tableHead" scope="col">Price</th>
+                <th class="tableHead" scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in items %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ item.description }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.rate }}</td>
+                <td>{{ item.total }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="totalBar">
+          <span>Subtotal :</span>
+          <span>{{sub_total}}</span>
+        </div>
+        <div class="totalBar">
+          <span>HST No. 732134002RT001 :</span>
+          <span>{{tax}}</span>
+        </div>
+        <div class="totalBar">
+          <span>Total :</span>
+          <span>{{net_total}}</span>
+        </div>
+        <p class="companyAddress">
+          AR Home Renovation and Construction Inc. C/O <br />
+          Amandeep Singh <br />
+          411 Poplar Avenue <br />
+          C1N 2B9, Summerside <br />
+        </p>
+        <p class = "date">
+          Date :<br>
+          {{current_date}}
+        </p>
+      </div>
 
-              </table>
-            </div>
-            <div class = "totalBar">
-              <span>Total :</span>
-              <span>{{sub_total}}</span>
-            </div>
-            <p class = "companyAddress">
-              AR Home Renovation and Construction Inc. C/O <br>
-              Amandeep Singh <br>
-              411 Poplar Avenue <br>
-              C1N 2B9, Summerside <br>
-            </p>
-
+      <div class="footerDetails">
+        <img src="{% static 'images/footer.png' %}" class="header" />
+        <a class="phone" href="tel: 647-622-4449"> 647-622-4449 </a>
+        <a class="mail" href="mailto: arhomerenovation1@gmail.com">
+          arhomerenovation1@gmail.com
+        </a>
+        <a class="website" href="https://arhomerenovation.ca/">
+          arhomerenovation.ca
+        </a>
+      </div>
     </div>
-      <div class = "footerDetails">
-        <img src = "{% static 'images/footer.png' %}" class ="header">
-        <a class = "phone" href = "tel: 647-622-4449"> 647-622-4449  </a>
-        <a class = "mail" href = "mailto: arhomerenovation1@gmail.com"> arhomerenovation1@gmail.com  </a>
-        <a class = "website" href = "https://arhomerenovation.ca/"> arhomerenovation.ca  </a>
-      </div>  
-  </div>
-</body>
+
+  </body>
 </html>
