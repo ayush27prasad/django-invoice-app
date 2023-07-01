@@ -1,67 +1,68 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
-        .nullBorder{
-            border :  none !important;
-        }
-        .redHead{
-            background-color : #d71921 !important;
-        }
-        .itemDescription{
-            display : inline-block !important;
-            width : 812px !important;
-            background-color : #d71921 !important;
-            border :  #d71921 1.5px solid !important;
-            height : 60px;
-        }
-    </style>
-    <title>Invoice</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice Template</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style>
+    .table{
+        display : inline-block !important ; 
+    }
+    .header{
+      width : 100%;
+      height : 50%;
+      }
+  </style>
 </head>
 <body>
-<div class = "container">
-    <div class="card text-dark">
-        <h3 class="card-header">Invoice Details</h3>
-        <div class="card-body">
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                    <strong>Billing Address:</strong> {{ billing_address }}
-                </li>
-                <li class="list-group-item">
-                    <strong>Invoice Number:</strong> {{ invoice_number }}
-                </li>
-            </ul>
-        </div>
-    </div>
+  <div class="card text-dark">
+    <img src = "{% static 'images/header.png' %}" class ="header">
+    <div class="centered-content">
+        
+            <div class="card text-dark">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Invoice Number:</strong> {{ invoice_number }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Billing Address:</strong> {{ billing_address }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+     
 
-    <div class="card">
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col" class = "redHead nullBorder"> # </th>
-                    <th scope="col" class = "itemDescription"> Item Description </th>
-                    <th scope="col" class = "nullBorder"> Quantity </th>
-                    <th scope="col" class = "nullBorder"> Price </th>
-                    <th scope="col" class = "nullBorder"> Total </th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in items %}
-                <tr>
-                    <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{ item.description }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>{{ item.rate }}</td>
-                    <td>{{ item.total }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <h1>{{sub_total}}</h1>
+        <div class="card">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" > # </th>
+                        <th scope="col" > Item Description </th>
+                        <th scope="col" > Quantity </th>
+                        <th scope="col" > Price </th>
+                        <th scope="col" > Total </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.rate }}</td>
+                        <td>{{ item.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h1>{{sub_total}}</h1>
+        </div>
+
+
     </div>
-</div>
+  </div>
 </body>
 </html>
