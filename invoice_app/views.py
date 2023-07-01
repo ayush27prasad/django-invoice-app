@@ -6,7 +6,6 @@ from xhtml2pdf import pisa
 from .models import Invoice, Item
 
 def invoice_page(request):
-    print("ABCD")
     if request.method == 'POST':
         billing_address = request.POST.get('billingAddress')
         invoice_number = request.POST.get('invoiceNumber')
